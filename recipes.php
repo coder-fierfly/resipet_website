@@ -10,38 +10,27 @@
 </head>
 
 <body>
-    <header>
-        <h1>Recipe Website</h1>
-        <nav>
-            <ul>
-                <li><a href="index.php">"название сайта"</a></li>
-                <li><a href="recipes.php">Рецепты</a></li>
-                <li><a href="add_recipe.php">Добавить рецет</a></li>
-                <li><a href="register.php">Регистрация</a></li>
-                <li><a href="login.php">Авторизация</a></li>
-                <li><a href="allusers.php">Все пользователи</a></li>
-            </ul>
-        </nav>
-    </header>
+    <?php include('header.php') ?>
 
     <main>
         <h2>Recipes</h2>
         <?php
+        include 'connection.php';
         // Connect to database
-        $db_host = "localhost";
-        $db_user = "postgres";
-        $db_pass = "8915lena";
-        $db_name = "kurs_work";
+        // $db_host = "localhost";
+        // $db_user = "postgres";
+        // $db_pass = "8915lena";
+        // $db_name = "kurs_work";
 
 
-        $conn = pg_connect("host=$db_host dbname=$db_name user=$db_user password=$db_pass");
-        if (!$conn) {
+        // $con = pg_connect("host=$db_host dbname=$db_name user=$db_user password=$db_pass");
+        if (!$con) {
             die('Connection failed.');
         }
 
         // Get recipes from database
         $pg = "SELECT * FROM recept";
-        $result = pg_query($conn, $pg);
+        $result = pg_query($con, $pg);
 
         // while ($row = pg_fetch_assoc($result)) {;
         //     array_push($data, $row);
@@ -66,7 +55,7 @@
         } else {
             echo "<p>No recipes found.</p>";
         }
-        pg_close($conn);
+        pg_close($con);
         ?>
     </main>
 
