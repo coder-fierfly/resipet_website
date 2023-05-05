@@ -1,0 +1,149 @@
+<?php include('log_check.php');
+include_once('functions.php'); ?>
+<!DOCTYPE html>
+<html style="font-size: 16px;" lang="ru">
+<!-- TODO доделать регистрацию -->
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="keywords" content="Регистрация">
+  <meta name="description" content="">
+  <title>регистрация</title>
+  <link rel="stylesheet" href="nicepage.css" media="screen">
+  <link rel="stylesheet" href="reg.css" media="screen">
+  <script class="u-script" type="text/javascript" src="jquery-1.9.1.min.js" defer=""></script>
+  <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
+  <meta name="generator" content="Nicepage 5.9.8, nicepage.com">
+  <meta name="referrer" content="origin">
+  <!-- <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i"> -->
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Organization",
+      "name": "",
+      "logo": "images/4768598-0.png"
+    }
+  </script>
+  <script>
+    function checkPassword() {
+      var password1 = document.getElementById("text-245c").value;
+      var password2 = document.getElementById("text-b0f1").value;
+      if (password1 != password2) {
+        alert("Пароли не совпадают!");
+      } else {
+        var php = "<?php
+                    if (isset($_FILES['file'])) {
+                      // проверяем, можно ли загружать изображение
+                      $check = can_upload($_FILES['file']);
+                      if ($check === true) {
+                        // загружаем изображение на сервер
+                        $buff_name = make_upload($_FILES['file']);
+                        $_SESSION['file'] =  $buff_name;
+                      } else {
+                        // выводим сообщение об ошибке
+                        // print("<strong>$check</strong>");
+
+                      }
+                    }
+                    if (isset($_POST['enter']) && !empty($_POST['enter'])) {
+                      $buff = '';
+                      if ($_SESSION['file'] == '' && isset($_SESSION['file'])) {
+                        $buff = $_SESSION['file'];
+                      }
+                      $pg = "NSERT INTO public.users(
+                                     user_name, user_surname, user_log, pass, admin, block, soft_delete, date_of_birth, try_to_enter, user_link)
+                                    VALUES ('" . $_POST['name'] . "', '" . $_POST['subname'] . "', '" . $_POST['login'] . "', '" .  $_SESSION['passw']
+                        .  "','" . "False" . "','" . "False" . "','" . "False" . "','" . $_POST['date'] . "','" . "0" . "','" . $buff . "') ;";
+                      $result = pg_query($con, $pg);
+                      if (!$result) {
+                        echo "Произошла ошибка.\n";
+                        $_SESSION['file'] = '';
+                        exit;
+                      } else {
+                        if ($_SESSION['file'] != '') {
+                          unlink($_SESSION['file']);
+                        }
+                      }
+                    }
+
+                    ?>";
+
+      }
+    }
+  </script>
+  <meta name="theme-color" content="#478ac9">
+  <meta property="og:title" content="регистрация">
+  <meta property="og:type" content="website">
+  <meta data-intl-tel-input-cdn-path="intlTelInput/">
+</head>
+
+<body class="u-body u-xl-mode" data-lang="ru">
+  <?php include('header.php') ?>
+  <section class="u-align-center u-clearfix u-section-1" id="sec-2df4">
+    <div class="u-clearfix u-sheet u-sheet-1">
+      <h2 class="u-text u-text-default u-text-1">Регистрация</h2>
+      <div class="file" data-interval="2000">
+        <form method="POST" id="upload-container" enctype="multipart/form-data">
+          <img id="upload-image" src="upload.svg">
+          <div>
+            <input id="file" type="file" name="file" multiple>
+            <label for="file">Выберите файл</label>
+          </div>
+          <input type="submit" value="Загрузить файл!">
+        </form>
+      </div>
+      <div class="u-form u-form-1">
+        <form action="" method="POST" style="padding: 10px">
+          <!-- TODO сделать обязательный ввод в некоторые поля -->
+          <div class="u-form-group u-form-name u-label-none">
+            <label for="name-3b9a" class="u-label">Name</label>
+            <input type="text" maxlength="30" placeholder="Введите имя" id="name-3b9a" name="name" class="u-input u-input-rectangle" required="">
+          </div>
+          <div class="u-form-group u-label-none u-form-group-2">
+            <label for="text-a6ea" class="u-label">Поле ввода</label>
+            <input type="text" maxlength="30" placeholder="Введите фамилию" id="text-a6ea" name="subname" class="u-input u-input-rectangle">
+          </div>
+          <div class="u-form-group u-label-none u-form-group-3">
+            <label for="text-d4a8" class="u-label">Поле ввода</label>
+            <input type="text" minlength="5" maxlength="30" placeholder="Введите логин" id="text-d4a8" name="login" class="u-input u-input-rectangle" required="required">
+          </div>
+          <div class="u-form-group u-label-none u-form-group-4">
+            <label for="text-b0f1" class="u-label">Поле ввода</label>
+            <input type="password" minlength="5" maxlength="30" placeholder="Пароль" id="text-b0f1" name="passw" class="u-input u-input-rectangle" required="required">
+          </div>
+          <div class="u-form-group u-label-none u-form-group-5">
+            <label for="text-245c" class="u-label">Поле ввода</label>
+            <input type="password" maxlength="30" placeholder="Повторите пароль" id="text-245c" name="text-3" class="u-input u-input-rectangle" required="required">
+          </div>
+          <div class="u-form-group u-label-none u-form-group-6">
+            <label for="text-aefe" class="u-label">Поле ввода</label>
+            <input type="date" maxlength="30" placeholder="Дата рождения" id="text-aefe" name="date" class="u-input u-input-rectangle">
+          </div>
+          <!-- TODO сделать прикрепление для файла -->
+          <!-- <div class="u-align-center u-form-group u-form-submit"> -->
+          <!-- <a class="u-btn u-btn-submit u-button-style ">Submit</a> -->
+          <!-- <button type="button" onclick="checkPassword()" name="enter" value="submit" class="u-btn u-btn-submit u-button-style ">Submit</button>
+          </div> -->
+          <button type="button" onclick="checkPassword()" name="enter" value="submit" class="u-btn u-btn-submit u-button-style ">Submit</button>
+          <!-- <div class="u-align-center u-form-group u-form-submit">
+            <a class="u-btn u-btn-submit u-button-style ">Зарегестрироваться</a>
+            <button type="button" onclick="checkPassword()" value="submit" class="u-form-control-hidden"></button>
+          </div> -->
+          <!-- <div class="u-form-send-message u-form-send-success"> Thank you! Your message has been sent. </div>
+          <div class="u-form-send-error u-form-send-message"> Unable to send your message. Please fix errors then try again. </div> -->
+          <input type="hidden" value="" name="recaptchaResponse">
+          <input type="hidden" name="formServices" value="7639b4c114e84de5ca88a56c5b316c88">
+        </form>
+      </div>
+    </div>
+  </section>
+
+
+  <?php include 'footer.php' ?>
+
+</body>
+
+</html>
