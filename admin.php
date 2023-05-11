@@ -107,7 +107,7 @@
               break;
             case 7:
               $query_change = pg_query($con, "SELECT public.try_to_enter_no_lim('" . $_POST['user_log'] . "')");
-              $change = pg_fetch_row($quey_change);
+              $change = pg_fetch_row($query_change);
               if ($change[0] == 't') {
                 echo "<script>alert(\"Безлимитные попытки входа включены\");</script>";
               } else {
@@ -225,7 +225,7 @@
               <select id="select-aeae" name="dich" class="u-input u-input-rectangle" required>
                 <option value="" selected="true" disabled="disabled">Что изменить?</option>
                 <option value="1">Оборудование</option>
-                <option value="2">Игридиент</option>
+                <option value="2">Ингредиент</option>
                 <option value="3">Тип блюда</option>
                 <option value="4">Мера</option>
                 <option value="5">Способ приготовления</option>

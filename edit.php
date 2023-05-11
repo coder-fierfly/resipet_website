@@ -5,7 +5,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Админская панель">
+    <meta name="keywords" content="Панель администратора">
     <meta name="description" content="">
     <title>админ</title>
     <link rel="stylesheet" href="nicepage.css" media="screen">

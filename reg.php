@@ -94,7 +94,7 @@ include_once('functions.php'); ?>
                     unlink($_SESSION['file']);
                   }
                 }
-                $value1 = "Пользователь зарегестирирован";
+                $value1 = "Пользователь зарегистрирован";
               }
             }
           }
@@ -107,7 +107,7 @@ include_once('functions.php'); ?>
           <img id="upload-image" src="upload.svg" style="width:200px; ">
           <div>
             <input id="file" type="file" name="file" multiple>
-            <label for="file">Выберите файл</label>
+            <label for="file">Выберите аватар</label>
           </div>
           <input type="submit" name='send' value="Загрузить файл!">
 

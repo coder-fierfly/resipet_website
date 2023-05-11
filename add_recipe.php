@@ -42,7 +42,7 @@ if (!isset($_SESSION['user_log'])) {
   <?php include('my_header.php') ?>
   <section class="u-clearfix u-section-1" id="sec-994d">
     <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-      <h2 class="u-text u-text-default u-text-1">Добавте свой рецепт!</h2>
+      <h2 class="u-text u-text-default u-text-1">Добавьте свой рецепт!</h2>
     </div>
   </section>
   <section class="u-section-2" id="sec-7f48">
@@ -54,9 +54,9 @@ if (!isset($_SESSION['user_log'])) {
               <img id="upload-image" src="upload.svg">
               <div>
                 <input id="file" type="file" name="file" multiple>
-                <label for="file">Выберите файл</label>
+                <label for="file">Выберите фото</label>
               </div>
-              <input type="submit" value="Загрузить файл!">
+              <input type="submit" value="Загрузить!">
             </form>
           </div>
 

@@ -48,7 +48,7 @@ if (!isset($_SESSION['user_log'])) {
       <a href="destroy.php" class="u-active-grey-75 u-black u-border-none u-btn u-btn-round u-button-style u-hover-grey-75 u-radius-50 u-text-body-alt-color u-btn-3">Выйти</a>
       <?php
       if (isset($_POST['logout'])) {
-        session_destroy(); // destroy all session data
+        session_destroy();
         header('location:' . SITEURL . 'enter.php');
       }
       ?>
@@ -68,7 +68,7 @@ if (!isset($_SESSION['user_log'])) {
   <section class="u-align-center u-clearfix u-section-2" id="sec-06ac">
     <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
 
-      <div class="u-repeater u-repeater-1"><!--product_item-->
+      <div class="u-repeater u-repeater-1">
         <?php
         $pg = "SELECT DISTINCT recipe.recipe_name, recipe.recipe_id, recipe.link, recipe.description
         FROM recipe,favorite_recipe_of_user, users
@@ -85,8 +85,7 @@ if (!isset($_SESSION['user_log'])) {
             echo '<div class="u-align-center u-container-style u-products-item u-repeater-item u-white u-repeater-item-1">';
             echo '<div class="u-container-layout u-similar-container u-container-layout-3">';
             echo '<h4 class="u-product-control u-text u-text-1">';
-            // TODO поменять href="recipe.php"
-            echo '<a class="u-product-title-link" href="recipe.php">' . $row['recipe_name'] . '</a></h4>';
+            echo '<a class="u-product-title-link" href="recipe.php?id=' . $row['recipe_id'] .  '"?>' . $row['recipe_name'] . '</a></h4>';
             echo '<img alt="" class="u-expanded-width u-image-1" src="' . $row['link'] . '">';
             echo '<blockquote class="u-text u-text-2">' . $row['description'] . '<br>';
             echo '</blockquote></div></div>';

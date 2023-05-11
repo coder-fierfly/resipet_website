@@ -49,10 +49,7 @@ if (!isset($con)) {
                 <form method="POST">
                   <h5>Ингридиенты:</h5>
                   <div class="container">
-
-
                     <?php
-
                     $res = pg_query($con, "SELECT * FROM public.ingredient Where ingredient_id != 12 ORDER BY ingredient_name ASC ");
 
                     if (pg_num_rows($res) > 0) {
