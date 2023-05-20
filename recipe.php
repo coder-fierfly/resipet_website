@@ -53,20 +53,21 @@
                   $user_res_result =  pg_query($con, $us_res);
                   if ($us_id != "" && pg_num_rows($user_res_result) == 0) {
                     $add_fav = "INSERT INTO public.favorite_recipe_of_user(recipe_id, user_id) VALUES (" . $_GET['id'] . "," . $us_id . ")";
-                    $rer =  pg_query($con, $add_fav);
+                    $r_fav =  pg_query($con, $add_fav);
+                    echo "<script>alert(\"Рецепт добавлен в избранное\");</script>";
                   } else {
-                    echo "<script>alert(\"рецепт уже в избранном\");</script>";
+                    echo "<script>alert(\"Рецепт уже в избранном\");</script>";
                   }
-                } else {
-                  echo "<script>alert(\"войдите в аккаунт\");</script>";
                 }
+              } else {
+                echo "<script>alert(\"Войдите в аккаунт\");</script>";
               }
             }
             ?>
             <?php
             $pg = "SELECT recipe_name, description, steps, link
               FROM public.recipe
-              where recipe_id ='" . $_GET['id'] . "';";
+              where recipe_id ='" . $_GET['id'] . "'";
             $result = pg_query($con, $pg);
             if (!$result) {
               echo "Произошла ошибка.\n";
@@ -81,7 +82,7 @@
                   $buff_link = 'images/err.jpg';
                 }
                 echo '<a class="u-product-title-link">'  . $row['recipe_name'] .  '</a></h2>
-          <div class="u-align-left u-product-control u-product-desc u-text u-text-2">';
+          <div class="u-align-left u-product-control u-product-desc u-text u-text-2"> <h4>Описание:</h4>';
                 echo '<p>' . $row['description'] . '</p></div>';
                 echo '<img class="u-image u-image-default u-image-1" src="' . $buff_link .
                   '" alt="" data-image-width="5000" data-image-height="3981">';
@@ -116,6 +117,7 @@
           <!-- </div> -->
         </form>
       </div>
+      <h3>Шаги приготовления:</h3>
   <?php
                 echo '<p class="u-text u-text-3">' . $row['steps'] . '<br></p>';
               }

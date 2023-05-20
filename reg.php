@@ -16,8 +16,6 @@ include_once('functions.php'); ?>
   <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
   <meta name="generator" content="Nicepage 5.9.8, nicepage.com">
   <meta name="referrer" content="origin">
-  <!-- <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i"> -->
-
 
   <script type="application/ld+json">
     {
@@ -43,6 +41,21 @@ include_once('functions.php'); ?>
     <div class="u-clearfix u-sheet u-sheet-1">
       <h2 class="u-text u-text-default u-text-1">Регистрация</h2>
       <?php
+      if (isset($_POST['send'])) {
+        if (isset($_FILES['file'])) {
+          // проверяем, можно ли загружать изображение
+          $check = can_upload($_FILES['file']);
+          if ($check === true) {
+            // загружаем изображение на сервер
+            $buff_name = make_upload($_FILES['file']);
+            $_SESSION['file'] =  $buff_name;
+            echo "<strong>Файл загружен!</strong>";
+          } else {
+            // выводим сообщение об ошибке
+            echo "<script>alert(\"$check\");</script>";
+          }
+        }
+      }
       if (isset($_POST['sub'])) {
         if (isset($_POST['passw']) && !empty($_POST['passw']) && isset($_POST['text-3']) && !empty($_POST['text-3'])) {
           if ($_POST['passw'] != $_POST['text-3']) {
@@ -54,19 +67,6 @@ include_once('functions.php'); ?>
             if ($row[0] == 't') {
               $value1 = "Пользователь с таким логином уже существует";
             } else {
-              $buff_name_f = '';
-              if (isset($_FILES['file'])) {
-                // проверяем, можно ли загружать изображение
-                $check = can_upload($_FILES['file']);
-                if ($check === true) {
-                  // загружаем изображение на сервер
-                  $buff_name_f = make_upload($_FILES['file']);
-                  $_SESSION['file'] =  $buff_name_f;
-                } else {
-                  echo "<script>alert(\" . $check .\");</script>";
-                }
-              }
-
               $buff = '';
               if (isset($buff_name_f)) {
                 if ($buff_name_f != '') {
@@ -76,22 +76,24 @@ include_once('functions.php'); ?>
 
               $salt = 'mYsAlT!';
               $p = crypt($_POST['passw'], $salt);
+              if (!isset($_SESSION['file'])) {
+                $_SESSION['file'] = '';
+              }
               $pg = "INSERT INTO public.users(
                              user_name, user_surname, user_log, pass, admin, block, soft_delete, date_of_birth, try_to_enter, user_link)
                             VALUES ('" . $_POST['name'] . "', '" . $_POST['subname'] . "', '" . $_POST['login'] . "', '" .  $p
-                .  "','" . "False" . "','" . "False" . "','" . "False" . "','" . $_POST['date'] . "','" . "0" . "','" . $buff . "') ;";
+                .  "','" . "False" . "','" . "False" . "','" . "False" . "','" . $_POST['date'] . "','" . "0" . "','" . $_SESSION['file'] . "') ;";
               $result = pg_query($con, $pg);
+
               if (!$result) {
                 echo "<script>alert(\"Произошла ошибка\");</script>";
-                if (isset($_SESSION['file'])) {
-                  $_SESSION['file'] = '';
-                }
+                $_SESSION['file'] = '';
                 exit;
               } else {
                 $_SESSION['user_log'] = $_POST['login'];
                 if (isset($_SESSION['file'])) {
                   if ($_SESSION['file'] != '') {
-                    unlink($_SESSION['file']);
+                    $_SESSION['file'] != '';
                   }
                 }
                 $value1 = "Пользователь зарегистрирован";
@@ -103,14 +105,12 @@ include_once('functions.php'); ?>
       ?>
       <div class="filik">
         <form method="POST" id="upload-container" enctype="multipart/form-data">
-
           <img id="upload-image" src="upload.svg" style="width:200px; ">
           <div>
             <input id="file" type="file" name="file" multiple>
             <label for="file">Выберите аватар</label>
           </div>
           <input type="submit" name='send' value="Загрузить файл!">
-
         </form>
       </div>
 
@@ -153,10 +153,7 @@ include_once('functions.php'); ?>
       </div>
     </div>
   </section>
-
-
   <?php include 'footer.php' ?>
-
 </body>
 
 </html>

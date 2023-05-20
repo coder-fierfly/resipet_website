@@ -10,6 +10,30 @@
   margin: 54px auto 0;
 }
 
+.aligncenter {
+  text-align: center;
+}
+
+.u-image-circle1.u-image1 {
+  border-radius: 50% !important;
+}
+
+.u-image1 {
+  object-fit: cover;
+  vertical-align: middle;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+}
+
+.u-text .u-image {
+  display: inline-block;
+}
+
+.u-post-content .u-image {
+  margin-bottom: 0.5rem;
+}
+
 .u-section-1 .u-text-1 {
   font-weight: 700;
   font-style: normal;

@@ -40,7 +40,19 @@ if (!isset($_SESSION['user_log'])) {
   <?php include('my_header.php') ?>
   <section class="u-align-center u-clearfix u-section-1" id="sec-78ce">
     <div class="u-clearfix u-sheet u-sheet-1">
-      <div alt="" class="u-image u-image-circle u-image-1" data-image-width="722" data-image-height="752"></div>
+      <br>
+      <?php
+
+      $ch_log = "Select users.user_link from users where user_log = '" . $_SESSION["user_log"] . "'";
+      $res = pg_query($con, $ch_log);
+      $row = pg_fetch_row($res);
+      if ($row[0] != '') {
+        echo '<img class="u-image1 u-image-circle1 middle" data-image-width="722" width="200" height="200" src="' . $row[0] . '" alt=""></img>';
+      } else {
+        echo ' <div alt="" class="u-image u-image-circle u-image-1" data-image-width="722" data-image-height="752"></div>';
+      }
+      ?>
+
       <h2 class="u-text u-text-default u-text-1"><?php echo (string) $_SESSION['user_log'] ?></h2>
       <a href="add_recipe.php" class="u-active-grey-75 u-black u-border-none u-btn u-btn-round u-button-style u-hover-grey-75 u-radius-50 u-text-body-alt-color u-btn-1">Добавить
         рецепт</a>
@@ -66,6 +78,7 @@ if (!isset($_SESSION['user_log'])) {
     </div>
   </section>
   <section class="u-align-center u-clearfix u-section-2" id="sec-06ac">
+    <h2> Избранное:</h2>
     <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
 
       <div class="u-repeater u-repeater-1">

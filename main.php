@@ -47,7 +47,9 @@ if (!isset($con)) {
                 <br>
 
                 <form method="POST">
+                  <input type="text" placeholder="Название" id="name-558c" name="name" class="u-input u-input-rectangle">
                   <h5>Ингридиенты:</h5>
+
                   <div class="container">
                     <?php
                     $res = pg_query($con, "SELECT * FROM public.ingredient Where ingredient_id != 12 ORDER BY ingredient_name ASC ");
@@ -217,12 +219,28 @@ if (!isset($con)) {
                         $pg .= " and recipe_cooking_method.cooking_method_id = " . $cooking;
                       }
 
+                      if (isset($_POST["name"]) && !empty($_POST["name"])) {
+                        $name = $_POST["name"];
+                        if ($buff == true) {
+                          $pg .= "and recipe.recipe_id = recipe.recipe_id ";
+                        } else {
+                          $pg .= "where  recipe.recipe_id = recipe.recipe_id ";
+                          $buff = true;
+                        }
+                        $pg .= "and recipe.recipe_name = '" . $name . "'";
+                      }
+
                       $pg .= ';';
+
                       $result = pg_query($con, $pg);
                       if (!$result) {
                         echo "Произошла ошибка.\n";
                         exit;
                       }
+                      if (pg_num_rows($result) == 0) {
+                        echo '<pre class="te">По вашему запросу ничего не нашлось.</pre>';
+                      }
+
                     ?>
                     <?php
                       if (pg_num_rows($result) > 0) {
@@ -230,8 +248,7 @@ if (!isset($con)) {
                           echo '<div class="u-align-center u-container-style u-products-item u-repeater-item u-white u-repeater-item-1">';
                           echo '<div class="u-container-layout u-similar-container u-container-layout-3">';
                           echo '<h4 class="u-product-control u-text u-text-1">';
-                          // TODO поменять href="recipe.php"
-                          echo '<a class="u-product-title-link" href="recipe.php">' . $row['recipe_name'] . '</a></h4>';
+                          echo '<a class="u-product-title-link" href="recipe.php?id=' . $row['recipe_id'] .  '"?>' . $row['recipe_name'] . '</a></h4>';
                           echo '<img alt="" class="u-expanded-width u-image-1" src="' . $row['link'] . '">';
                           echo '<blockquote class="u-text u-text-2">' . $row['description'] . '<br>';
                           echo '</blockquote></div></div>';
